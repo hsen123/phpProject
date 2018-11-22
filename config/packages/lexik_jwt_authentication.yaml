@@ -1,0 +1,17 @@
+lexik_jwt_authentication:
+    private_key_path: '%kernel.project_dir%/%env(JWT_PRIVATE_KEY_PATH)%'
+    public_key_path:  '%kernel.project_dir%/%env(JWT_PUBLIC_KEY_PATH)%'
+    pass_phrase:      '%env(JWT_PASSPHRASE)%'
+    token_ttl: '%env(GC_MAX_LITETIME)%'
+    token_extractors:
+        authorization_header:      # look for a token as Authorization Header
+            enabled: true
+            prefix:  Bearer
+            name:    Authorization
+        cookie:                    # check token in a cookie
+            enabled: true
+            name:    BEARER
+
+gesdinet_jwt_refresh_token:
+    ttl_update: true
+    ttl: 15552000

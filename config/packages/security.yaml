@@ -1,0 +1,75 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        FOS\UserBundle\Model\UserInterface: argon2i
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        api_login:
+            pattern:  ^/api/login
+            user_checker: App\Security\UserChecker
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path: /api/login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: true
+            user_checker: App\Security\UserChecker
+            guard:
+                authenticator:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 604800 # 1 week in seconds
+                path: /api
+                domain: ~
+        main:
+            pattern: ^/
+            user_checker: App\Security\UserChecker
+            anonymous: true
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                success_handler: App\Handler\LoginSuccessHandler
+            logout:
+                path: /logout
+                target: /login
+                handlers: [App\Handler\LogoutHandler]
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+                domain: ~
+    access_control:
+        - { path: ^/_profiler, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users, role: IS_AUTHENTICATED_ANONYMOUSLY, methods:[POST] }
+        - { path: ^/api/password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY, methods:[POST] }
+        - { path: ^/api/login/refresh, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/result/download, role: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/api/docs, role: ROLE_ADMIN }
+        - { path: ^/api/notifications, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/resend-confirmation/.+, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/share, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/shared, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/info/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/feedback$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/broadcast-image, role: IS_AUTHENTICATED_ANONYMOUSLY, methods:[GET] }
+        - { path: ^/confirm/newsletter, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/unsubscribe/newsletter, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resend, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, role: [ROLE_ADMIN] }
+        - { path: ^/device/revoke, role: ROLE_USER, methods:[DELETE] }
+        - { path: ^/, role: [ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_REMEBERED] }

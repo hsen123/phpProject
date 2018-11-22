@@ -1,0 +1,13 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'bootstrap_4_layout.html.twig'
+        - 'form/fields.html.twig'
+    date:
+      timezone: "%env(TIME_ZONE)%"
+    globals:
+      google_analytics_id: '%env(resolve:GOOGLE_ANALYTICS_ID)%'
+      google_analytics_log_events: '%env(resolve:GOOGLE_ANALYTICS_LOG_EVENTS)%'
+      appstore_link: 'https://itunes.apple.com/us/app/id1362147895'

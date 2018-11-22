@@ -1,0 +1,18 @@
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: App\Entity\User
+    from_email:
+        address:        '%env(MAILER_DEFAULT_FROM_ADDRESS)%'
+        sender_name:    '%env(MAILER_DEFAULT_FROM_SENDER)%'
+    service:
+        mailer: 'fos_user.mailer.default'
+    registration:
+        form:
+            type: App\Form\FOSUserBundle\RegistrationType
+            validation_groups: [ registrationMq ]
+        confirmation:
+              enabled: true
+    resetting:
+        form:
+            validation_groups: [ registrationMq ]

@@ -1,0 +1,47 @@
+api_platform:
+    title: 'MQuant Strip Scan'
+    description: 'API for the Merck MQuant Strip Scan Project'
+    version: '0.1'
+    enable_fos_user: true
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    collection:
+        pagination:
+            client_enabled: true
+            enabled_parameter_name: pagination
+            client_items_per_page: true
+            items_per_page_parameter_name: itemsPerPage
+            maximum_items_per_page: 100
+            items_per_page: 20
+
+    formats:
+        jsonld:   ['application/ld+json']
+        jsonhal:  ['application/hal+json']
+        json:     ['application/json']
+        xml:      ['application/xml', 'text/xml']
+        html:     ['text/html']
+        csv:      ['text/csv']
+        xlsx:     ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        zip:      ['application/zip']
+
+services:
+    result.search_filter:
+        parent: 'api_platform.doctrine.orm.range_filter'
+        arguments: [ { measurementValue: ~, testStripCatalogNumber: ~, testStripLotNumber: ~, } ]
+        tags: [ 'api_platform.filter' ]
+    result.order_filter:
+        parent: 'api_platform.doctrine.orm.order_filter'
+        arguments: [ { id: ~, measurementName: ~, measurementValue: ~, measurementValueMin: ~, measurementValueMax: ~, measurementUnit: ~, citationForm: ~, sampleCreationDate: ~, comment: ~, testStripCatalogNumber: ~, testStripLotNumber: ~, cardCatalogNumber: ~, cardLotNumber: ~, createdByUser.displayName: ~, createdByUser.company: ~, createdByUser.segment: ~, phoneName: ~, phoneOperatingSystem: ~, phoneCamera: ~} ]
+        tags: [ 'api_platform.filter' ]
+    analysis.order_filter:
+        parent: 'api_platform.doctrine.orm.order_filter'
+        arguments: [ { id: ~, creationDate: ~, name: ~, user.displayName: ~, countOfResults: ~ } ]
+        tags: [ 'api_platform.filter' ]
+    broadcast.order_filter:
+        parent: 'api_platform.doctrine.orm.order_filter'
+        arguments: [ { id: ~, creationDate: ~, title: ~, views: ~, sentDate: ~, owner.displayName: ~ } ]
+        tags: [ 'api_platform.filter' ]
+    user.order_filter:
+        parent: 'api_platform.doctrine.orm.order_filter'
+        arguments: [ { id: ~, displayName: ~, email: ~, company: ~, companyAdress: ~, companyCity: ~, companyPostalCode: ~, companyCountry: ~, segment: ~, segmentDepartment: ~, segmentWorkgroup: ~, countOfPh: ~, countOfNO3: ~, countOfMeasurements: ~} ]
+        tags: [ 'api_platform.filter' ]

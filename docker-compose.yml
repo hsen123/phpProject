@@ -1,0 +1,19 @@
+version: "3"
+services:
+    php:
+        restart: always
+        image: $IMAGE_TAG_SYMFONY_PHP
+        env_file:
+            - .env
+        expose:
+          - "9000"
+
+    webserver:
+        restart: always
+        image: $IMAGE_TAG_WEBSERVER
+        depends_on:
+          - php
+        links:
+          - php
+        ports:
+          - "80:80"

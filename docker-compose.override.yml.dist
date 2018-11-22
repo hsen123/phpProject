@@ -1,0 +1,53 @@
+version: "3"
+services:
+    db:
+        restart: on-failure
+        image: mquant_database
+        build:
+            dockerfile: .docker/mysql/Dockerfile
+            context: .
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: mquant
+        ports:
+            - 3306:3306
+
+    php:
+        restart: on-failure
+        build:
+            dockerfile: .docker/php-dev/Dockerfile
+            context: .
+        image: mquant_php
+        volumes:
+          - .:/var/www/html:rw
+        working_dir: /var/www/html
+        depends_on:
+            - db
+        env_file: []
+        environment:
+            XDEBUG_CONFIG: "remote_host=XXX.XXX.XXX.XXX" # Use your local IP/Hostname here
+            PHP_IDE_CONFIG: "serverName=vagrant-vm" # Use the server profiles name from PHPStorm here for CLI debugging to resolve to the correct path mappings
+
+    webserver:
+        restart: on-failure
+        build:
+            dockerfile: .docker/nginx/Dockerfile
+            context: .
+        image: mquant_webserver
+        volumes:
+            - .:/var/www/html:rw
+            - .docker/nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
+        depends_on:
+            - php
+        ports:
+            - 80:80
+    node:
+        image: "node:9"
+        volumes:
+          - .:/var/www/html:rw
+        working_dir: /var/www/html
+
+    aws:
+        image: lphoward/fake-s3
+        ports:
+            - 4569:4569

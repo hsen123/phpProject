@@ -1,0 +1,7 @@
+aws:
+    version: latest
+    region: eu-central-1
+    endpoint: "http://aws:4569"
+    credentials:
+        key: "%env(AWS_KEY)%"
+        secret: "%env(AWS_SECRET)%"

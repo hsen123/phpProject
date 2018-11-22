@@ -1,0 +1,177 @@
+{
+	"info": {
+		"name": "MQuant Web",
+		"_postman_id": "883f3769-d422-d332-fd08-39cf57c57b3f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "result-list",
+			"description": "",
+			"item": [
+				{
+					"name": "dev-vm/api/results",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "dev-vm/api/results",
+							"host": [
+								"dev-vm"
+							],
+							"path": [
+								"api",
+								"results"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "result-list pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://dev-vm/api/results?page=2&itemsPerPage=20",
+							"protocol": "http",
+							"host": [
+								"dev-vm"
+							],
+							"path": [
+								"api",
+								"results"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"equals": true
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "20",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "result-list sorting",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://dev-vm/api/results?page=2&itemsPerPage=20&order%5BmeasurementValue%5D=desc",
+							"protocol": "http",
+							"host": [
+								"dev-vm"
+							],
+							"path": [
+								"api",
+								"results"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"equals": true
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "20",
+									"equals": true
+								},
+								{
+									"key": "order%5BmeasurementValue%5D",
+									"value": "desc",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "result-list-filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://dev-vm/api/results?page=1&itemsPerPage=20&measurementValue%5Blt%5D=100",
+							"protocol": "http",
+							"host": [
+								"dev-vm"
+							],
+							"path": [
+								"api",
+								"results"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"equals": true
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "20",
+									"equals": true
+								},
+								{
+									"key": "measurementValue%5Blt%5D",
+									"value": "100",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"email\": \"dev@incloud.de\",\n\"password\": \"developer\"\n}"
+				},
+				"url": {
+					"raw": "dev-vm/api/login",
+					"host": [
+						"dev-vm"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
