@@ -1,0 +1,196 @@
+@import '../variables';
+
+#faq-edit-container {
+    background-color: $white;
+    .faq-edit-controls {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        align-items: flex-start;
+
+        margin: 12px;
+
+        .btn {
+            width: auto;
+            margin-right: 12px;
+        }
+    }
+
+    .faq-edit-container.accordion {
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-content: flex-start;
+            align-items: flex-start;
+
+            padding: 0;
+            margin: 0;
+            background-color: $vibrant-yellow;
+
+            > * {
+                padding: 6px 20px;
+            }
+
+            .category-name-header {
+                max-width: 85%;
+                width: 85%;
+
+                .mb-0 {
+                    display: flex;
+
+                    input {
+                        margin-right: 20px;
+                    }
+
+                    .btn.btn-link {
+                        background-color: transparent;
+                        font-family: VerdanaPro-Bold, Verdana, sans-serif;
+                        color: $rich-purple;
+                        font-weight: bold;
+                        font-size: 13px;
+                        width: 100%;
+                        padding: 0;
+
+                        &:hover,
+                        &:focus {
+                            text-decoration: none;
+                        }
+
+                        div {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                }
+            }
+
+            .faq-controls {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+
+                height: 48px;
+                padding: 0 20px 0 0;
+                margin: 0;
+            }
+        }
+
+        .card-body {
+            font-family: VerdanaPro-Regular, Verdana, sans-serif;
+            font-size: 12px;
+            line-height: 24px;
+
+            .faq-question {
+                color: $rich-purple;
+            }
+
+            .faq-answer {
+                padding-top: 12px;
+            }
+        }
+
+        .faq-controls {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            align-content: flex-start;
+            align-items: flex-start;
+
+            .icon-button:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+#add-question-modal,
+#edit-faq-faqitem-modal {
+    .modal-body {
+        .add-question-head-controls {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: center;
+
+            .dropdown {
+                padding-left: 12px;
+                white-space: nowrap;
+            }
+
+            .question-visibility-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                align-content: flex-start;
+                align-items: center;
+
+                .checkbox {
+                    padding-left: 12px;
+                }
+
+                .question-visibility {
+                    white-space: nowrap;
+                    padding-right: 12px;
+                }
+
+                .eye-icon {
+                    background-size: contain;
+                    height: 25px;
+                    margin: 2px 0 0 0;
+                    width: 25px;
+                    min-width: 25px;
+
+                    &.eye-open-icon {
+                        background-image: url('../../images/icons/material-design/purple/eye.svg');
+                    }
+                    &.eye-closed-icon {
+                        background-image: url('../../images/icons/material-design/purple/eye-closed.svg');
+                    }
+                }
+            }
+        }
+
+        .character-wrapper {
+            position: relative;
+
+            .character-container {
+                color: #b3b3b3;
+                font-size: 0.75em;
+
+                position: absolute;
+                right: 25px;
+                bottom: 10px;
+            }
+        }
+
+        .toolbar-row {
+            padding-top: 12px;
+            position: relative;
+
+            .character-container {
+                color: #b3b3b3;
+                font-size: 0.75em;
+
+                position: absolute;
+                right: 25px;
+                top: 13px;
+            }
+        }
+    }
+
+    .modal-footer {
+        margin-top: 12px;
+    }
+}

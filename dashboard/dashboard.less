@@ -1,0 +1,19 @@
+@import '../../css/dashboard-tiles/dashboard-tiles.less';
+
+.dashboard {
+    /** See make-col mixin in ~bootstrap/scss/mixins/_grid.scss */
+    &>.left-row.col-sm-4 {
+        flex: 0 0 38%;
+        max-width: 38%;
+    }
+
+    &>.middle-content.col-sm-4 {
+        flex: 0 0 32%;
+        max-width: 32%;
+    }
+
+    &>.col-sm-4.right-row {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}

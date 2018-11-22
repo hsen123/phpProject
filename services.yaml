@@ -1,0 +1,194 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'en'
+    env(GOOGLE_ANALYTICS_ID): ''
+    env(GOOGLE_ANALYTICS_LOG_EVENTS): 'false'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Entity,Migrations,Tests,Kernel.php,EventSubscriber/EmailConfirmationSubscriber.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Twig\BackgroundExtension:
+        tags: ['twig.extension']
+
+    App\Twig\StaticExtension:
+        tags: ['twig.extension']
+        arguments:
+          - '@kernel'
+
+    App\Twig\SidebarExtension:
+        tags: ['twig.extension']
+
+    App\Twig\InstanceOfExtension:
+        tags: ['twig.extension']
+
+    App\Twig\UserExtension:
+        tags: ['twig.extension']
+
+    DataURI\TwigExtension:
+        tags: ['twig.extension']
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\EventSubscriber\UserEmailConfirmationSubscriber:
+        arguments: ['@fos_user.mailer', '@security.csrf.token_generator']
+
+    # Database sessions
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
+            - { lock_mode: 1 }
+
+    #Userbundle overrides
+    app.form.registration:
+        class: App\Form\FOSUserBundle\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+    fos_user.listener.email_confirmation:
+            class:        App\EventSubscriber\EmailConfirmationSubscriber
+            arguments:    ["@fos_user.mailer", "@fos_user.util.token_generator", "@router", "@session"]
+            tags:
+                - { name: kernel.event_subscriber }
+
+    App\Filter\SearchFilter:
+            class: 'App\Filter\SearchFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'search' } ]
+
+    App\Filter\ResultListLikeFilter:
+            class: 'App\Filter\ResultListLikeFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'like_filter' } ]
+
+    App\Filter\ResultEqualToFilter:
+            class: 'App\Filter\ResultListEqualToFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'equal_to_filter' } ]
+
+    App\Filter\ResultNotEqualToFilter:
+            class: 'App\Filter\ResultListNotEqualToFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'not_equal_to_filter' } ]
+
+    App\Filter\ResultGreaterThanFilter:
+            class: 'App\Filter\ResultListGreaterThanFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'greater_than_filter' } ]
+
+    App\Filter\ResultGreaterThanEqualsFilter:
+            class: 'App\Filter\ResultListGreaterThanEqualsFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'greater_than_equals_filter' } ]
+
+    App\Filter\ResultLessThanFilter:
+            class: 'App\Filter\ResultListLessThanFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'less_than_filter' } ]
+
+    App\Filter\ResultLessThanEqualsFilter:
+            class: 'App\Filter\ResultListLessThanEqualsFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'less_than_equals_filter' } ]
+
+    App\Filter\Analysis\AnalysisDiscardedFilter:
+            class: 'App\Filter\Analysis\AnalysisDiscardedFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'analysis.discarded_filter' } ]
+
+    App\Filter\ResultDiscardedFilter:
+            class: 'App\Filter\ResultDiscardedFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'result.discarded_filter' } ]
+
+    App\Filter\Analysis\AnalysisResultParameterOrderFilter:
+            class: 'App\Filter\Analysis\AnalysisResultParameterOrderFilter'
+            arguments: [ '@App\Filter\RequestFilterService', '@doctrine.orm.entity_manager', '@doctrine', '@request_stack', '@logger' ]
+            tags: [ { name: 'api_platform.filter', id: 'analysis.result_parameter_order_filter' } ]
+
+    App\Filter\Analysis\AnalysisResultParameterFilter:
+            class: 'App\Filter\Analysis\AnalysisResultParameterFilter'
+            arguments: [ '@App\Filter\RequestFilterService', '@doctrine.orm.entity_manager', '@doctrine', '@request_stack', '@logger' ]
+            tags: [ { name: 'api_platform.filter', id: 'analysis.result_parameter_filter' } ]
+
+    App\Filter\Broadcast\BroadcastSentOrderFilter:
+            class: 'App\Filter\Broadcast\BroadcastSentOrderFilter'
+            arguments: [ '@App\Filter\RequestFilterService', '@doctrine.orm.entity_manager', '@doctrine', '@request_stack', '@logger' ]
+            tags: [ { name: 'api_platform.filter', id: 'broadcast.sent_order_filter' } ]
+
+    App\Filter\Broadcast\BroadcastSentFilter:
+            class: 'App\Filter\Broadcast\BroadcastSentFilter'
+            arguments: [ '@App\Filter\RequestFilterService', '@doctrine.orm.entity_manager', '@doctrine', '@request_stack', '@logger' ]
+            tags: [ { name: 'api_platform.filter', id: 'broadcast.sent_filter' } ]
+
+    App\Filter\Result\AggregateFilter:
+            class: 'App\Filter\Result\AggregateFilter'
+            arguments: [ '@App\Filter\RequestFilterService', '@doctrine.orm.entity_manager', '@doctrine', '@request_stack', '@logger' ]
+            tags: [ { name: 'api_platform.filter', id: 'result.aggregate_filter' } ]
+
+    App\Filter\IdsFilter:
+            class: 'App\Filter\IdsFilter'
+            autowire: true
+            tags: [ { name: 'api_platform.filter', id: 'id_filter' } ]
+
+
+    #EntityExtensions
+    App\Doctrine\ResultExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+            - { name: api_platform.doctrine.orm.query_extension.item, priority: 10 }
+
+    App\Doctrine\AnalysisExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
+    App\Doctrine\TestStripPackageExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
+    Gesdinet\JWTRefreshTokenBundle\Doctrine\RefreshTokenManager: '@gesdinet.jwtrefreshtoken.refresh_token_manager'
+
+    App\EventListener\AuthenticationFailureListener:
+        class: 'App\EventListener\AuthenticationFailureListener'
+        arguments: [ '@router', '@request_stack', '@App\Repository\DeviceManagementRepository' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+
+    App\EventListener\TokenValidator:
+        class: 'App\EventListener\TokenValidator'
+        arguments: [ '@request_stack', '@gesdinet.jwtrefreshtoken.refresh_token_manager', '@App\Repository\DeviceManagementRepository']
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+
+    App\Serializer\AnalysisContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\AnalysisContextBuilder.inner' ]
+        autoconfigure: false
+
+    App\DataProvider\ResultCollectionDataProvider:
+        tags: [ { name: 'api_platform.collection_data_provider', priority: 3 } ]
+        autoconfigure: false
+        arguments:
+            $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
+

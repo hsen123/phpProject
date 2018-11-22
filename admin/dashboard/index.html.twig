@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/admin-dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'admin/dashboard/tile/dashboard-tile.html.twig'
+                    with {'amountData': userCount, 'description': 'pages.admin_dashboard.description.registered_user'|trans,
+                            'link': path('admin-users')} %}
+            </div>
+            <div class="col-md-3">
+                {% include 'admin/dashboard/tile/dashboard-tile.html.twig'
+                    with {'amountData': successfullCount, 'description': 'pages.admin_dashboard.description.successfull_results'|trans,
+                    'link': path('admin-result-list-success')} %}
+            </div>
+            <div class="col-md-3">
+                {% include 'admin/dashboard/tile/dashboard-tile.html.twig'
+                    with {'amountData': discardedCount, 'description': 'pages.admin_dashboard.description.discarded_results'|trans,
+                    'link': path('admin-result-list-discarded')} %}
+            </div>
+            <div class="col-md-3">
+                {% include 'admin/dashboard/tile/dashboard-tile.html.twig'
+                    with {'amountData': analysesCount, 'description': 'pages.admin_dashboard.description.analyses'|trans,
+                    'link': path('admin-analyses')} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="export-button-tile">
+                    <a target="_blank" rel="noopener noreferrer" href="{{ path('exportNewsletter') }}" class="btn primary button-large">
+                        {{ 'export.newsletter'|trans }}
+                    </a>
+                    <a target="_blank" rel="noopener noreferrer" href="{{ path('exportBetaFeedback') }}" class="btn primary button-large">
+                        {{ 'export.betafeedback'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

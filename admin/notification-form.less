@@ -1,0 +1,75 @@
+
+.modal-heading {
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 30px;
+}
+
+.create-notification-form {
+  .img-section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+
+    .preview-container {
+      width: 362px;
+      height: 172px;
+      flex: 0 0 362px;
+      background-color: #D8D8D8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .preview {
+        max-width: 362px;
+        max-height: 172px;
+      }
+    }
+    .config-container {
+      width: 348px;
+      padding-left: 30px;
+      .use-image {
+        margin-bottom: 20px;
+        .ant-switch-checked {
+          background: @primary-color;
+        }
+      }
+      .flex-col {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        > span {
+          margin-left: 10px;
+          display: block;
+          width: 198px;
+          font-size: 8px;
+          font-family: VerdanaPro-Regular, Verdana, sans-serif;
+          color: @black;
+        }
+      }
+    }
+  }
+}
+
+
+.row {
+  .button-bar {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    a {
+      min-width: 142px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > img {
+        margin-right: 6px;
+      }
+    }
+  }
+}
+
+.purple {
+  color: @primary-color;
+}

@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/overlay.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/admin-notifications.css') }}">
+{% endblock %}
+
+
+{% block javascripts %}
+    {% include "translations.html.twig" %}
+
+    <script src="{{ asset('build/admin-notifications.js') }}"></script>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row no-gutters">
+        <div class="col-sm-12">
+            <div id="react-notifications"></div>
+        </div>
+    </div>
+{% endblock %}

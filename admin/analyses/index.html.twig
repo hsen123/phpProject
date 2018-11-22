@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/overlay.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/analysis.css') }}">
+{% endblock %}
+
+
+{% block javascripts %}
+    {% include "translations.html.twig" %}
+    <script>
+			window.analysisMeta = JSON.parse({{ app.user.getAnalysisListMetaData() | json_encode | raw }});
+    </script>
+    <script src="{{ asset('build/admin-analyses.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row analyses-filtering-row no-gutters">
+        <div class="col-sm-12">
+            <div id="react-analysis-admin"></div>
+        </div>
+    </div>
+{% endblock %}

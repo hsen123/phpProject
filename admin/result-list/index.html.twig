@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/result-list.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {% include "translations.html.twig" %}
+    <script>
+        window.resultListMeta = JSON.parse({{ app.user.getResultListmetaData() | json_encode | raw }});
+    </script>
+    <script src="{{ asset('build/admin-result-list.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="react-result-list-admin"></div>
+{% endblock %}

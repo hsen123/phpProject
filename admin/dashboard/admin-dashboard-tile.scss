@@ -1,0 +1,18 @@
+@import '../../variables.scss';
+
+.admin-dashboard-tile {
+    padding: 30px 0;
+    align-items: center;
+    background: $white;
+    display: flex;
+    flex-direction: column;
+
+    .admin-tile-label {
+        color: $grey;
+        margin-bottom: 30px;
+    }
+
+    .admin-tile-heading {
+        color: $rich-purple;
+    }
+}

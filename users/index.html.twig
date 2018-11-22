@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/overlay.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/admin-users.css') }}">
+{% endblock %}
+
+
+{% block javascripts %}
+    {% include "translations.html.twig" %}
+    <script>
+			window.userListMeta = JSON.parse({{ app.user.getUserListMetaData() | json_encode | raw }});
+    </script>
+    <script src="{{ asset('build/admin-users.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row no-gutters">
+        <div class="col-sm-12">
+            <div id="react-users"></div>
+        </div>
+    </div>
+{% endblock %}
